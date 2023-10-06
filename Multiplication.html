@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Table Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<h1 class="title">Dan's Multiplication Quiz</h1>
+	<hr>
+    <div>
+		<p>Question: <span id="questionCounter">1</span> / <span id="totalQuestions">20</span>   |   Points: <span id="totalPoints">0</span></p>
+		<p id="completionMessage"></p>
+		<div class="progressBar">
+			<div id="progress" class="progress"></div>
+		</div>
+		<p id="categoryDisplay"></p>
+
+        <table>
+            <tr>
+                <td id="operand1"></td>
+                <td>x</td>
+                <td id="operand2"></td>
+                <td>=</td>
+                <td><input type="number" id="userAnswer"></td>
+				<td id="message"></td>
+            </tr>
+        </table>
+        <!-- <button onclick="checkAnswer()">Submit</button> -->
+		<button onclick="skipQuestion()">Skip</button>
+        <button onclick="endQuiz()">End</button>
+		<button id="newGameButton">New Quiz</button>
+
+    </div>
+	<p id="maxPointsDisplay"></p>
+    <div id="progressTrend">
+        <h3>Progress % Trend</h3>
+        <canvas id="trendlineCanvas" width="400" height="100"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+	<div><button onclick="resetStats()">Reset All Stats</button></div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+h1 {
+    color: white;
+    background-color: navy; /* Navy Blue Background */
+    padding: 10px; /* Add padding to make it look better */
+    margin-bottom: 0; /* Remove margin at the bottom to have the line closer to the text */
+}
+
+/* Style for the Line Separator */
+hr {
+    border: 0;
+    height: 1px;
+    background: navy; /* Color of the line */
+    margin-top: 0; /* Remove margin at the top to have the line closer to the text */
+}
+
+body { 
+	font-family: Arial, sans-serif; 
+	background-color: lightblue; /* Light Blue Background */
+}
+.correct { color: green; }
+.incorrect { color: red; }
+
+#questionCounter, #totalPoints, #totalQuestions {
+	color: navy;
+	font-weight: bold;
+}
+
+#progressTrend {
+    margin-top: 20px;
+}
+
+.title {
+    font-size: 2.5em;  /* Adjust as needed for size */
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+td {
+    font-size: 8em;  /* Similar to h2 size, adjust as needed */
+    text-align: center;
+    padding: 20px;
+}
+
+#userAnswer {
+    font-size: 1em;   /* Set the font size similar to <td> */
+    width: 4ch;       /* Adjust width as per your needs; 4 characters wide here */
+    border: none;     /* Remove border */
+    border-bottom: 2px solid black;  /* Optional: Add a bottom border to indicate input */
+    outline: none;    /* Remove the default blue outline on focus */
+    text-align: center;  /* Center the number in the input box */
+    background: none; /* Remove any background color */
+    -webkit-appearance: textfield; /* Remove the up-down arrows on the side */
+}
+
+#userAnswer:focus {
+    border-bottom: 3px solid blue;  /* Adjust the border on focus for more clarity */
+}
+
+#maxPointsDisplay {
+	font-size: 2em;
+}
+
+#message, #correctAnswer {
+	font-size: 2em;
+	text-align: left;
+}
+
+#maxPointsDisplay {
+	font-size: 8px;
+	text-align: left;
+}
+
+.progressBar {
+    width: 100%;
+    background-color: #f3f3f3;
+    margin: 20px 0;
+}
+
+.progress {
+    width: 0;
+    height: 30px;
+    background-color: #4caf50;
+}
+
+#progressTrend {
+    height: 200px;
+}
+
