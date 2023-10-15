@@ -20,13 +20,26 @@ body {
 .correct { color: green; }
 .incorrect { color: red; }
 
-#questionCounter, #totalPoints, #totalQuestions {
+#questionCounter, #totalPoints, #totalQuestions, #timer {
 	color: navy;
 	font-weight: bold;
 }
 
-#progressTrend {
+#progressTrend h3, #timeTrend h3 {
     margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#progressTrend, #timeTrend {
+    height: 150px;
+}
+
+#trendlineCanvas, #timeTrendCanvas {
+    height: 100px;  /* adjust as needed */
+}
+
+#blankSpace {
+	height: 40px;
 }
 
 .title {
@@ -82,8 +95,3 @@ td {
     height: 30px;
     background-color: #4caf50;
 }
-
-#progressTrend {
-    height: 200px;
-}
-

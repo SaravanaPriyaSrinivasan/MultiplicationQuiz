@@ -10,11 +10,35 @@ const QUESTION_SEQUENCE = [
 let currentCategory = 0;
 document.getElementById('totalQuestions').textContent = `${totalQuestions}`;
 
+let timerInterval;
+let timeElapsed = 0;
+let timerStarted = false;
+let progressChart, timeChart;
+
+function startTimer() {
+    timerInterval = setInterval(function() {
+        timeElapsed += 0.1;
+        document.getElementById('timer').textContent = formatTime(timeElapsed);
+    }, 100);  // Update every 100ms (0.1s)
+}
+
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    const millis = (seconds % 1).toFixed(1).substr(2);  // To capture the decimal part
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}.${millis}`;
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
 // Call this function when the game starts or resets
 displayMaxPoints();
 
 // Display Progress trend chart
 displayProgressTrend();
+displayTimeTrend();
 
 function calculateMaxPoints() {
     return QUESTION_SEQUENCE.reduce((sum, category) => {
@@ -70,6 +94,7 @@ function nextQuestion() {
     currentQuestion++;
     
     if (currentQuestion > totalQuestions) {
+		console.log("Time Elapsed:", timeElapsed); // Debugging
         endQuiz();
         return;
     }
@@ -118,7 +143,7 @@ function nextQuestion() {
 	document.getElementById('operand2').textContent = operand2;
     document.getElementById('userAnswer').value = '';
 	document.getElementById('questionCounter').textContent = `${currentQuestion}`;
-	const progressPercentage = (currentQuestion / totalQuestions) * 100;
+	const progressPercentage = ((currentQuestion-1) / (totalQuestions-1)) * 100;
 	document.getElementById('progress').style.width = `${progressPercentage}%`;
     // totalPoints += category.points; 
 	document.getElementById('userAnswer').disabled = false; // Enable input
@@ -158,7 +183,12 @@ function skipQuestion() {
 }
 
 function endQuiz() {
-    // Set the message to indicate the end of the quiz
+	stopTimer();
+	
+	// Update displayed points
+	document.getElementById('totalPoints').textContent = totalPoints;
+	
+	// Set the message to indicate the end of the quiz
     document.getElementById('completionMessage').textContent = 'Quiz Ended!';
 
     // Save the percentage of points earned in this session
@@ -175,6 +205,14 @@ function endQuiz() {
 
     // Display the updated progress trend
     displayProgressTrend();
+	
+	// Save elapsedTime
+	let timeData = JSON.parse(localStorage.getItem('timeData')) || [];	
+	timeData.push(timeElapsed);
+	localStorage.setItem('timeData', JSON.stringify(timeData));
+	
+	// Display the updated time trend
+	displayTimeTrend();
 }
 
 function displayProgressTrend() {
@@ -182,7 +220,13 @@ function displayProgressTrend() {
     if (progressData.length === 0) return;
 
     const ctx = document.getElementById('trendlineCanvas').getContext('2d');
-    new Chart(ctx, {
+	
+	// Destroy previous chart instance if it exists
+    if (progressChart) {
+        progressChart.destroy();
+    }
+	
+    progressChart = new Chart(ctx, {
         type: 'bar',  // Change from 'line' to 'bar'
         data: {
             labels: Array.from({length: progressData.length}, (_, i) => i + 1),
@@ -213,9 +257,51 @@ function displayProgressTrend() {
     progressTrendHeader.textContent = `Progress Trend (Sessions: ${gamesPlayed})`;
 }
 
+function displayTimeTrend() {
+    const timeData = JSON.parse(localStorage.getItem('timeData')) || [];
+    if (timeData.length === 0) return;
+
+    const ctx = document.getElementById('timeTrendCanvas').getContext('2d');
+	
+	// Destroy previous chart instance if it exists
+    if (timeChart) {
+        timeChart.destroy();
+    }
+	
+    timeChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Array.from({ length: timeData.length }, (_, i) => i + 1),
+            datasets: [{
+                label: 'Time (s)',
+                data: timeData,
+                backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                borderColor: 'green',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+			plugins: {
+				legend: {
+					display: false
+				}
+			}
+        }
+    });
+	const gamesPlayed = parseInt(localStorage.getItem('gamesPlayed')) || 0;
+    const timeTrendHeader = document.getElementById('timeTrend').querySelector('h3');
+    timeTrendHeader.textContent = `Time Trend (Sessions: ${gamesPlayed})`;
+}
+
 function resetStats() {
     localStorage.removeItem('progressData');
     localStorage.removeItem('gamesPlayed');
+	localStorage.removeItem('timeData');
     // Reset other stats as needed
     alert('All stats have been reset.');
     // Optionally, reload the page to reset the game too:
@@ -225,9 +311,17 @@ function resetStats() {
 document.getElementById('userAnswer').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         event.preventDefault();  // Prevents any default action related to Enter key
+		
+		if (!timerStarted) {
+            startTimer();
+            timerStarted = true;  // Set the flag to true after starting the timer
+        }
+		
         checkAnswer();
     }
 });
 
 // Start the quiz with the first question
 nextQuestion();
+
+// Debugging

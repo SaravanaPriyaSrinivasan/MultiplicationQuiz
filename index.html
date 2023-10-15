@@ -10,7 +10,7 @@
 	<h1 class="title">Dan's Multiplication Quiz</h1>
 	<hr>
     <div>
-		<p>Question: <span id="questionCounter">1</span> / <span id="totalQuestions">20</span>   |   Points: <span id="totalPoints">0</span></p>
+		<p>Question: <span id="questionCounter">1</span> / <span id="totalQuestions">20</span>   |   Points: <span id="totalPoints">0</span> | <span id="timer">0:00</span></p>
 		<p id="completionMessage"></p>
 		<div class="progressBar">
 			<div id="progress" class="progress"></div>
@@ -28,15 +28,21 @@
             </tr>
         </table>
         <!-- <button onclick="checkAnswer()">Submit</button> -->
-		<button onclick="skipQuestion()">Skip</button>
-        <button onclick="endQuiz()">End</button>
-		<button id="newGameButton">New Quiz</button>
+		<!-- <button id="startQuizButton">Start Quiz</button> -->
+		<button onclick="skipQuestion()">Skip Question</button>
+        <button onclick="endQuiz()">End Quiz</button>
+		<!-- <button id="newGameButton">New Quiz</button> -->
 
     </div>
 	<p id="maxPointsDisplay"></p>
     <div id="progressTrend">
         <h3>Progress % Trend</h3>
-        <canvas id="trendlineCanvas" width="400" height="100"></canvas>
+        <canvas id="trendlineCanvas" width="400"></canvas>
+	</div>
+	<div id="blankSpace"></div>
+	<div id="timeTrend">
+		<h3>Time Trend</h3>
+		<canvas id="timeTrendCanvas" width="400"></canvas>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
